@@ -1,0 +1,335 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Internetowa Liga PSG</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="styles/app.css" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/scripts/Utilities.js?v=103"></script>
+    <script src="/scripts/LeagueService.js?v=103"></script>
+    <script src="/scripts/LeagueEliminationsTableControl.js?v=103"></script>
+    <script src="/scripts/LeagueGroupTableControl.js?v=103"></script>
+    <script src="/scripts/League.js?v=103"></script>
+    <script src="/scripts/app.js?v=103"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="App.showView('home'); return false;">Home</a></li>
+                <li><a href="#" onclick="App.loadViewGroup(0, 'a'); return false;">Grupa&nbsp;A</a></li>
+                <li><a href="#" onclick="App.loadViewGroup(0, 'b'); return false;">Grupa&nbsp;B</a></li>
+                <li><a href="#" onclick="App.loadViewGroup(0, 'e'); return false;">Eliminacje</a></li>
+                <li><a href="#" onclick="App.showView('archive'); return false;">Archiwum</a></li>
+                <li><a href="#" onclick="App.showView('help'); return false;">Pomoc</a></li>
+                <li><a href="#" onclick="App.showPrizes(); return false;">Nagrody</a></li>
+                <!--<li id="join-button" class="default-hidden"><a href="#" onclick="App.loadViewJoin(); return false;">Zapisy</a></li>-->
+                <li id="admin-button" class="default-hidden"><a href="#" onclick="App.showView('admin'); return false;">Admin</a></li>
+                <!--<li><a href="#" onclick="App.loadItem('item', 'test'); return false;">Test</a></li>-->
+                <li class="separator"></li>
+                <li id="signin-button" style="display: none;"><a href="#" onclick="App.showSignIn(); return false;">Zaloguj</a></li>
+                <li id="signout-button" style="display: none;"><a href="#" onclick="App.signOut(); return false;">Wyloguj</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="screen-lock"><h1>Trwa komunikacja z serwerem ...</h1></div>
+    <div id="notifications">
+        <div>Trwa przerwa wakacyjna. Rozgrywki zostaną wznowione z początkiem września. Zapisy będą prowadzone w drugiej połowie sierpnia na serwerze KGS przez użytkownika iLigaGo.</div>
+    </div>
+    <div id="body">
+        <div id="main">
+            <div id="views">
+                <div id="view-home">
+                    <!--<div class="article">
+                        <h2>Reset haseł</h2>
+                        <div class="footer"><b>Opublikowano:</b> 2 kwietnia 2016</div>
+                        <p>Hasła do strony zostaną zresetowane w dniu 3 kwietnia. Aby uzyskać nowe hasło należy przekazać swój adres email użytkownikowi iLigaGo na serwerze KGS. Nowe hasło powinno przyjść na podany email tuż po prowadzeniu go do systemu przez administratora. Jeśli w ciągu kilku dni nie otrzymasz hasła prosimy o informację. Celem całej operacji jest przerzucenie części komunikacji z uczestnikami na formę mailową.</p>
+                    </div>-->
+                    <div class="article">
+                        <h2>Witamy!</h2>
+                        <div class="footer"><b>Opublikowano:</b> 1 kwietnia 2016</div>
+                        <p>Znajdujesz się w systemie internetowych rozgrywek pod patronatem Polskiego Stowarzyszenia Go.</p>
+                        <p>Jeśli chcesz wziąć udział w eliminacjach powinieneś zgłosić swoją chęć użytkownikowi iLigaGo na serwerze KGS. </p>
+                    </div>
+                </div>
+                <div id="view-eliminations">
+                    <h2 id="view-eliminations-title">Eliminations</h2>
+                    <div id="eliminations"></div>
+                    <h3>Terminarz</h3>
+                    <!--<table class="simple border">
+                        <tr><th>Runda</th><th>Termin</th></tr>
+                        <tr><td>1</td><td>do 6</td></tr>
+                        <tr><td>2</td><td>do 12</td></tr>
+                        <tr><td>3</td><td>do 18</td></tr>
+                        <tr><td>4</td><td>do 24</td></tr>
+                        <tr><td>5 i 6</td><td>do 30</td></tr>
+                        <tr><td>1</td><td>do 14</td></tr>
+                        <tr><td>2</td><td>do 19</td></tr>
+                        <tr><td>3</td><td>do 24</td></tr>
+                        <tr><td>4 i 5</td><td>do 31</td></tr>
+                    </table>-->
+                    Bieżący terminarz dostępny jest w opisie użytkownika iLigaGo.
+                    <!--<h3>Wyniki</h3>-->
+                    <div id="eliminations-results"></div>
+                </div>
+                <div id="view-group">
+                    <h2 id="view-group-title">Group</h2>
+                    <h3>Tabela</h3>
+                    <div id="group"></div>
+                    <h3>Wyniki</h3>
+                    <div id="group-results"></div>
+                    <h3>Zaplanowane mecze</h3>
+                    <div id="group-plan"></div>
+                </div>
+                <div id="view-player">
+                    <h2 id="view-player-nickname"></h2>
+                    <img id="view-player-graph" src="" width="640" height="480" alt="Wykres siły na serwerze KGS" />
+                </div>
+                <div id="view-archive">
+                    <h2>Rozgrywki funkcjonujące w przeszłości</h2>
+                    <p><a href="https://ilmm09.wordpress.com/archiwum/" target="_blank">https://ilmm09.wordpress.com/archiwum/</a> - Internetowa Liga Młodych Mistrzów</p>
+                    <h2>Bieżące rozgrywki</h2>
+                    <p>
+                        <table class="simple border" cellspacing="0">
+                            <tr>
+                                <th>Wrzesień 2015</th>
+                                <td></td>
+                                <td></td>
+                                <td><a href="http://challonge.com/reaktywacja_iLMM" target="_blank">Eliminacje</a></td>
+                            </tr>
+                            <tr>
+                                <th>Październik 2015</th>
+                                <td><a href="#" onclick="App.loadViewGroup(1, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(1, 'b'); return false;">Grupa B</a></td>
+                                <td>Eliminacje</td>
+                            </tr>
+                            <tr>
+                                <th>Listopad 2015</th>
+                                <td><a href="#" onclick="App.loadViewGroup(2, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(2, 'b'); return false;">Grupa B</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(2, 'e'); return false;">Eliminacje</a></td>
+                            </tr>
+                            <tr>
+                                <th>Grudzień 2015</th>
+                                <td><a href="#" onclick="App.loadViewGroup(3, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(3, 'b'); return false;">Grupa B</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(3, 'e'); return false;">Eliminacje</a></td>
+                            </tr>
+                            <tr>
+                                <th>Styczeń 2016</th>
+                                <td><a href="#" onclick="App.loadViewGroup(4, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(4, 'b'); return false;">Grupa B</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(4, 'e'); return false;">Eliminacje</a></td>
+                            </tr>
+                            <tr>
+                                <th>Luty 2016</th>
+                                <td><a href="#" onclick="App.loadViewGroup(5, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(5, 'b'); return false;">Grupa B</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(5, 'e'); return false;">Eliminacje</a></td>
+                            </tr>
+                            <tr>
+                                <th>Marzec 2016</th>
+                                <td><a href="#" onclick="App.loadViewGroup(6, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(6, 'b'); return false;">Grupa B</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(6, 'e'); return false;">Eliminacje</a></td>
+                            </tr>
+                            <tr>
+                                <th>Kwiecień 2016</th>
+                                <td><a href="#" onclick="App.loadViewGroup(7, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(7, 'b'); return false;">Grupa B</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(7, 'e'); return false;">Eliminacje</a></td>
+                            </tr>
+                            <tr>
+                                <th>Maj 2016</th>
+                                <td><a href="#" onclick="App.loadViewGroup(8, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(8, 'b'); return false;">Grupa B</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(8, 'e'); return false;">Eliminacje</a></td>
+                            </tr>
+                            <tr>
+                                <th>Czerwiec 2016</th>
+                                <td><a href="#" onclick="App.loadViewGroup(9, 'a'); return false;">Grupa A</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(9, 'b'); return false;">Grupa B</a></td>
+                                <td><a href="#" onclick="App.loadViewGroup(9, 'e'); return false;">Eliminacje</a></td>
+                            </tr>
+                            <!--<tr>
+                                <th>Maj 2016</th>
+                                <td>Grupa A</td>
+                                <td>Grupa B</td>
+                                <td>Eliminacje</td>
+                            </tr>-->
+                        </table>
+                    </p>
+                </div>
+                <div id="view-signin">
+                    <form action="/signIn" method="POST" id="signin-form" onsubmit="return App.signIn();">
+                        <table class="form">
+                            <tr><td>Login:</td><td><input id="LoginName" type="text" value="" /><td /></tr>
+                            <tr><td>Hasło:</td><td><input id="Password" type="password" value="" /><td /></tr>
+                            <tr><td></td><td><input type="submit" value="Zaloguj" /><td /></tr>
+                        </table>
+                    </form>
+                </div>
+                <div id="view-help">
+                    <h3>Spis treści</h3>
+                    <ul>
+                        <li><a href="#help-contact">Kontakt</a></li>
+                        <li>
+                            <div>Mecz</div>
+                            <ul>
+                                <li><a href="#help-time-settings"><b>Ustawienia czasu gry</b></a></li>
+                                <li><a href="#help-game-result">Zgłaszanie wyniku</a></li>
+                                <li><a href="#help-game-date">Ustalanie daty rezegrania partii</a></li>
+                                <li><a href="#help-game-kifu">Kifu</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#help-regulations">Regulamin</a></li>
+                    </ul>
+                    <hr />
+                    <div id="help-contact">
+                        <h3>Kontakt</h3>
+                        <table>
+                            <tr><td>KGS:</td><td>iLigaGo</td></tr>
+                            <tr><td>E-Mail:</td><td>liga.go@o2.pl</td></tr>
+                        </table>
+                    </div>
+                    <div id="help-time-settings">
+                        <h3>Ustawienia czasu gry</h3>
+                        <table>
+                            <tr><td>Eliminacje:</td><td><b>20</b> minut czasu podstawowego oraz <b>3 x 20</b> sekund byo yomi</td></tr>
+                            <tr><td>Grupy:</td><td><b>30</b> minut czasu podstawowego oraz <b>3 x 30</b> sekund byo yomi</td></tr>
+                        </table>
+                        <p>Czas może zostać wydłużony za zgodą obu graczy.</p>
+                    </div>
+                    <div id="help-game-result">
+                        <h3>Zgłaszanie wyniku</h3>
+                    </div>
+                    <div id="help-game-date">
+                        <h3>Ustalanie daty rezegrania partii</h3>
+                        <p>Termin rozegrania partii i sposób jego ustalenia zależy od indywidualnych preferencji obu graczy. System posiada wsparcie w tym zakresie. Ustalanie terminu na stronie jest zalecane. Na liście gier przy meczach w których bierzemy udział mamy dostępną akcję "Edytuj". Po jej wybraniu otwiera się okno dialogowe na którym znajduje się pole "Propozycja daty". W pole to wprowadzamy datę wraz z godziną o której chcielibyśmy zagrać. <b>Jeśli obaj gracze wprowadzą tą samą datę zostanie ona zatwierdzona i stanie się widoczna dla wszystkich</b> na liście gier. W analogiczny sposób <b>gracze mogą powtórnie ustalić datę gry</b>.</p>
+                    </div>
+                    <div id="help-game-kifu">
+                        <h3>Kifu</h3>
+                        <p>
+                            Zaleca się wprowadzanie zapisu partii podczas zgłaszania wyniku gier. Ma to na celu umożliwienie chętnym zapoznianie się z przebiegiem partii oraz ułatwia roztrzyganie wyniku w przypadku gdy te zgłoszone przez obu graczy są sprzeczne. Zapis partii można odnaleźć na stronach KGS. Przykładowo dla użytkownika "nickname" historia rozegranych partii znajduje się one pod adresem <b>http://www.gokgs.com/gameArchives.jsp?user=<i>nickname</i></b>. Należy odnaleźć zgłaszaną partię i skopiować adres do jej zapisu. Adres ten znajduje się w pierwszej kolumnie (klikamy prawym przyciskiem na tekst w pierwszej kolumnie, następnie wybieramy opcję "kopiuj adres" lub o zbliżonej nazwie i wklejamy do formularza wyniku gry). Wystarczy, że tylko jeden z graczy wprowadzi adres do zapisu gry. <b>Sugerujemy aby zapis gry wprowadzał zwyciężca meczu</b>.
+                        </p>
+                    </div>
+                    <div id="help-regulations">
+                        <h3>Regulamin</h3>
+                        <ol type="1">
+                            <li>Internetowa Liga PSG to rozgrywki internetowe w Go odbywające się na KGSie w Polskim Pokoju. Na Ligę składają się dwie 8-osobowe grupy A i B oraz eliminacje. Jeden cykl ligi trwa miesiąc.</li>
+                            <li>Zapisy do eliminacji odbywają się do 20. każdego miesiąca. Zgłoszenie należy wysłać do użytkownika iLigaGo na serwerze KGS.</li>
+                            <li>W grupach gry odbywają się systemem każdy-z-każdym. Eliminacje rozgrywają się systemem podwójnej drabinki. Gracze umawiają się między sobą na terminy gier. Na stronie można zaproponować termin przeciwnikowi w panelu gry. W grupach na rozegranie gier jest cały miesiąc.</li>
+                            <li>Co miesiąc dwóch zwycięzców eliminacji awansuje do grupy B, dwie pierwsze osoby z grupy B awansują do grupy A, dwie ostatnie osoby spadają z grupy A do B i dwie ostatnie osoby wypadają z grupy B.</li>
+                            <li>W grupach za zwycięstwo otrzymuje się 2 punkty, a za przegraną - 1 punkt (dzięki czemu warto grać!). Tie-breakery to kolejno to punkty, SODOS, bezpośredni pojedynek, pozycja startowa.</li>
+                            <li>Gramy według zasad japońskich, komi 6,5, kolory losuje system. Czas na grę w grupach to 30min + 3x30s, a w eliminacjach - 20min + 3x20s.</li>
+                            <li>Polskie Stwarzyszenie Go funduje nagrody dla zwycięzców Ligi.
+                                <ol type="a">
+                                    <li>Zwycięzcy eliminacji otrzymują paczkę krówek.</li>
+                                    <li>Zwycięzca grupy B otrzymuje grę z komentarzem udzieloną przez silnego polskiego gracza.</li>
+                                    <li>W grupie A gracze zbierają Punkty Zwycięstwa, czyli po prostu punkty zdobyte w grupie A. Punkty się zachowuję i przechodzą na kolejne miesiące. Gracz, który odbiera w danym miesiącu nagrodę albo spada z grupy A, traci wszystkie Punkty Zwycięstwa. Tie-breakery to kolejno Punkty Zwycięstwa, pozycja w grupie A w danym miesiącu. Nagrodą dla osoby wygrywającej ranking PZ jest do wyboru lekcja z Mateuszem Surmą 1 pro albo książka goistyczna (limit cenowy 120zł).</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div id="view-prizes">
+                    <h3>Grupa A</h3>  
+                    <p>
+                        W grupie A gracze zbierają Punkty Zwycięstwa, czyli po prostu punkty zdobyte w grupie A. Punkty się zachowuję i przechodzą na kolejne miesiące. Gracz, który odbiera w danym miesiącu nagrodę albo spada z grupy A, traci wszystkie Punkty Zwycięstwa. Tie-breakery to kolejno Punkty Zwycięstwa, pozycja w grupie A w danym miesiącu. Nagrodą dla osoby wygrywającej ranking PZ jest do wyboru lekcja z Mateuszem Surmą 1 pro albo książka goistyczna (limit cenowy 120zł). Sponsorem nagród jest <b><a href="http://psg.go.art.pl/">Polskie Stowarzyszenie Go</a></b>.
+                    </p>
+                    <h3>Grupa B</h3>
+                    <p>
+                        Zwycięzca grupy B otrzymuje grę z komentarzem udzieloną przez silnego polskiego gracza.
+                    </p>
+                    <span style="display: inline-block; background-image:url('/images/p1.jpg'); background-position: center; background-size: cover; width: 200px; height: 250px;"></span>
+                    <span style="display: inline-block; background-image:url('/images/p2.jpg'); background-position: center; background-size: cover; width: 200px; height: 250px;"></span>
+                    <span style="display: inline-block; background-image:url('/images/p3.jpg'); background-position: center; background-size: cover; width: 200px; height: 250px;"></span>
+                    <span style="display: inline-block; background-image:url('/images/p4.jpg'); background-position: center; background-size: cover; width: 200px; height: 250px;"></span>
+                    <h3>Punktacja</h3>
+                    Aktualna punktacja dostępna jest w opisie użytkownika iLigaGo.
+                    <!--<table id="league-points" class="standard">
+                        <tr><td>higaki94 </td><td></td><td> 8</td><td> 8</td><td> 6</td><td>8</td><td>  13</td></tr>
+                        <tr><td>Siasio   </td><td></td><td>12</td><td>12</td><td>14</td><td>7</td><td>  12</td></tr>
+                        <tr><td>Deejay   </td><td></td><td>  </td><td>  </td><td>  </td><td>1</td><td>   9</td></tr>
+                        <tr><td>Maek     </td><td></td><td> 5</td><td> 8</td><td>11</td><td>2</td><td>   8</td></tr>
+                        <tr><td>gisel    </td><td></td><td> 4</td><td> 7</td><td> 8</td><td>6</td><td>   8</td></tr>
+                        <tr><td>papapishu</td><td></td><td> 8</td><td> 8</td><td> 8</td><td>7</td><td>   6</td></tr>
+                        <tr><td>Alvar    </td><td></td><td>  </td><td>  </td><td>  </td><td> </td><td> 5-5</td></tr>
+                        <tr><td>Rzepa    </td><td></td><td>  </td><td>  </td><td>  </td><td> </td><td> 2-2</td></tr>
+                        <tr><td>Ashitaka </td><td></td><td> 6</td><td>  </td><td> 5</td><td>3</td><td>    </td></tr>
+                        <tr><td>Mogget   </td><td></td><td>  </td><td>  </td><td>  </td><td>2</td><td>    </td></tr>
+                        <tr><td>SadPlayer</td><td></td><td>  </td><td> 7</td><td> 7</td><td> </td><td>    </td></tr>
+                        <tr><td>Cezary   </td><td></td><td>10</td><td>  </td><td> 4</td><td> </td><td>    </td></tr>
+                        <tr><td>Coorchac </td><td></td><td>  </td><td> 7</td><td>  </td><td> </td><td>    </td></tr>
+                        <tr><td>KaC      </td><td></td><td>10</td><td>12</td><td>  </td><td> </td><td>    </td></tr>
+                        <tr><td>koksik   </td><td></td><td>  </td><td>  </td><td>  </td><td> </td><td>    </td></tr>
+                    </table>-->
+                </div>
+                <div id="view-join">
+                    <h3>Bieżące zapisy do eliminacji</h3>  
+                    <ul id="joined-players-list">
+                        <li>Aaaaa</li>
+                        <li>Aaaaa</li>
+                        <li>Aaaaa</li>
+                    </ul>
+                    <input type="button" value="Chcę grać" onclick="App.joinToEliminations()" />
+                    <input type="button" value="Rezygnuję" onclick="App.unjoinFromEliminations()" />
+                </div>
+                <div id="view-admin">
+                    <h3>Nowy użytkownik</h3>
+                    <p>
+                        Login KGS (istotna wielkość znaków) <input id="adduser-login" type="text" />
+                        E-Mail <input id="adduser-email" type="text" />
+                        <input type="button" value="Dodaj" onclick="App.addUser()" />
+                        <span id="adduser-status"></span>
+                    </p>
+                    <h3>Przypomnienie hasła</h3>     
+                    <p>
+                        Login <input id="sendpassword-login" type="text" />
+                        <input type="button" value="Wyślij" onclick="App.sendPassword()" />
+                        <span id="sendpassword-status"></span>
+                        <br />
+                        <br />
+                        <textarea id="sendpassword-body" rows="10" cols="80">Witaj,&lt;br /&gt;&lt;br /&gt;w Internetowej Lidze Polskiego Stowarzyszenia Go. Zapraszamy do zapoznania się z regulaminem na stronie ligi znajdującej się pod adresem &lt;a href=\\&quot;http://liga-go.appspot.com/\\&quot;&gt;http://liga-go.appspot.com&lt;/a&gt;. Twoje dane do logowania:&lt;br /&gt;&lt;br /&gt;Nazwa użytkownika: [username]&lt;br /&gt;Hasło: [password]&lt;br /&gt;&lt;br /&gt;&lt;p&gt;Życzymy powodzenia!&lt;/p&gt;</textarea>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="side" style="display: none;">
+            <div style="">
+                <table id="match-details" class="simple">
+                    <tr><th colspan="3">Gracze</th></tr>
+                    <tr><td colspan="3"><span id="match-details-player1" style="display: inline-block; width: 50%; text-align: center;">Siasio</span><span id="match-details-player2" style="display: inline-block; width: 50%; text-align: center;">higaki94</span></tr>
+                    <tr><th colspan="3">Planowana data</th></tr>
+                    <tr id="match-details-date-display"><td>Uzgodniona</td><td colspan="2">-</td></tr>
+                    <tr id="match-details-date1-display"><td>-</td><td colspan="2">-</td></tr>
+                    <tr id="match-details-date2-display"><td>-</td><td colspan="2">-</td></tr>
+                    <tr id="match-details-dateOwn-edit"><td>Twoja propozycja</td><td colspan="2"><input type="text" /></td></tr>
+                    <tr id="match-details-dateOpponent-display"><td>Otrzymana propozycja</td><td colspan="2">-</td></tr>
+                    <tr><th colspan="3">Wynik</th></tr>
+                    <tr id="match-details-result-display"><td>Zatwierdzony</td><td colspan="2"></td></tr>
+                    <tr id="match-details-result-edit"><td>Zatwierdzony</td><td colspan="2"><select id="match-details-result-select"><option value=""></option><option value="1">Wygrał gracz 1</option><option value="2">Wygrał gracz 2</option><option value="1W">Wygrał gracz 1 (walkower)</option><option value="2W">Wygrał gracz 2 (walkower)</option><option value="DW">Obustronny walkower</option><option value="D">Remis</option></select></td></tr>
+                    <tr id="match-details-result1-display"><td>Siasio</td><td colspan="2">-</td></tr>
+                    <tr id="match-details-result1-edit"><td>Siasio</td><td colspan="2"><select id="match-details-result1-select"><option value=""></option><option value="1">Wygrałem</option><option value="2">Przegrałem</option><option value="D">Remis</option></select></td></tr>
+                    <tr id="match-details-result2-display"><td>higaki94</td><td colspan="2">-</td></tr>
+                    <tr id="match-details-result2-edit"><td>higaki94</td><td colspan="2"><select id="match-details-result2-select"><option value=""></option><option value="2">Wygrałem</option><option value="1">Przegrałem</option><option value="D">Remis</option></select></td></tr>
+                    <tr><th colspan="3">Zapis partii</th></tr>
+                    <tr id="match-details-url-display"><td>Zatwierdzony</td><td colspan="2"></td></tr>
+                    <tr id="match-details-url-edit"><td>Zatwierdzony</td><td colspan="2"><input type="text" /></td></tr>
+                    <tr id="match-details-url1-display"><td>Siasio</td><td colspan="2">http://blabla.com/123.sgf</td></tr>
+                    <tr id="match-details-url1-edit"><td>Siasio</td><td><input type="text" /></td><td><a href="#">Szukaj</a></td></tr>
+                    <tr id="match-details-url2-display"><td>higaki94</td><td colspan="2">http://blabla.com/123.sgf</td></tr>
+                    <tr id="match-details-url2-edit"><td>higaki94</td><td><input type="text" /></td><td><a href="#">Szukaj</a></td></tr>
+                    <tr><th colspan="3" style="text-align: right;"><input type="button" value="Zapisz" onclick="App.saveMatch(1)" /></th></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="match-preview">
+        <div></div>
+        <div><a target="_blank" href="">Przeglądaj zapis partii</a></div>
+    </div>
+</body>
+</html>

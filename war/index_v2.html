@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<link rel="stylesheet" type="text/css" href="styles/v2/test.css">
+	<script src="scripts/v2/test.js?cache=18101101"></script>
+</head>
+<body>
+	<div id="popups">
+		<div class="popup-background" id="popup-background"></div>
+		<div class="popup" id="testpopup">
+			<div class="match-result"><span>Player1</span><span>O</span> - <span>X</span><span>Player2</span></div>
+			<table>
+				<tbody class="player1 display">
+					<tr><td><b>Gracz 1</b></td><td>Wynik:</td><td id="match-popup-display-player1-result">-</td></tr>
+					<tr><td></td><td>Zapis gry:</td><td id="match-popup-display-player1-url">-</td></tr>
+					<tr><td></td><td>Propozycja daty:</td><td id="match-popup-display-player1-date">-</td></tr>
+				</tbody>
+				<tbody class="player1 edit">
+					<tr><td><b>Gracz 1</b></td><td>Wynik:</td><td><select id="match-popup-edit-player1-result"><option value=""></option><option value="1">Wygrałem</option><option value="2">Przegrałem</option><option value="D">Remis</option></select></td><td></td></tr>
+					<tr><td></td><td>Zapis gry:</td><td><input type="text" id="match-popup-edit-player1-url" /></td></tr>
+					<tr><td></td><td>Propozycja daty:</td><td><input type="text" id="match-popup-edit-player1-date" /></td></tr>
+				</tbody>
+				<tbody class="player2 display">
+					<tr><td><b>Gracz 2</b></td><td>Wynik:</td><td id="match-popup-display-player2-result">-</td></tr>
+					<tr><td></td><td>Zapis gry:</td><td id="match-popup-display-player2-url">-</td></tr>
+					<tr><td></td><td>Propozycja daty:</td><td id="match-popup-display-player2-date">-</td></tr>
+				</tbody>
+				<tbody class="player2 edit">
+					<tr><td><b>Gracz 2</b></td><td>Wynik:</td><td><select id="match-popup-edit-player2-result"><option value=""></option><option value="1">Przegrałem</option><option value="2">Wygrałem</option><option value="D">Remis</option></select></td><td></td></tr>
+					<tr><td></td><td>Zapis gry:</td><td><input type="text" id="match-popup-edit-player2-url" /></td></tr>
+					<tr><td></td><td>Propozycja daty:</td><td><input type="text" id="match-popup-edit-player2-date" /></td></tr>
+				</tbody>
+				<tbody class="admin display">
+					<tr><td><b>Administrator</b></td><td>Wynik:</td><td id="match-popup-display-admin-result">-</td></tr>
+					<tr><td></td><td>Zapis gry:</td><td id="match-popup-display-admin-url"></td></tr>
+				</tbody>
+				<tbody class="admin edit">
+					<tr><td><b>Administrator</b></td><td>Wynik:</td><td><select id="match-popup-edit-admin-result"><option value=""></option><option value="1">Wygrał gracz 1</option><option value="2">Wygrał gracz 2</option><option value="1W">Wygrał gracz 1 (walkower)</option><option value="2W">Wygrał gracz 2 (walkower)</option><option value="DW">Obustronny walkower</option><option value="D">Remis</option></select></td></tr>
+					<tr><td></td><td>Zapis gry:</td><td><input type="text" id="match-popup-edit-admin-url"/></td></tr>
+					<tr style="display: none"><td></td><td>Propozycja daty:</td><td><input type="text" id="match-popup-edit-admin-date" /></td></tr>
+				</tbody>
+			</table>
+			<div>
+				<input class="save" type="button" value="Zapisz" />
+				<input class="close" type="button" value="Zamknij" />
+			</div>
+		</div>
+	</div>
+	<div id="notifications">
+	</div>
+	<div id="screen-lock"><h1>Trwa komunikacja z serwerem ...</h1></div>
+	<nav id="nav">
+		<ul>
+			<li><a href="#" onclick="Action('view/#home'); return false;"><img src="http://psg.go.art.pl/sites/default/files/psg-logo_jt-mini1_0.png" /></a></li>
+			<li><a href="#" onclick="Action('view/group/a'); return false;">Grupa&nbsp;A</a></li>
+			<li><a href="#" onclick="Action('view/group/b'); return false;">Grupa&nbsp;B</a></li>
+			<li><a href="#" onclick="Action('view/group/e'); return false;">Eliminacje</a></li>
+			<li><a href="#" onclick="Action('view/#archive'); return false;">Archiwum</a></li>
+			<li><a href="#" onclick="Action('view/#help'); return false;">Pomoc</a></li>
+			<li class="separator"></li>
+			<li class="right"><a href="#" onclick="Action('view/#profile'); return false;">Profil</a></li>
+			<li class="right"><a href="#" onclick="Action('user/signout'); return false;" id="signout-btn">Wyloguj</a></li>
+			<li class="right"><a href="#" onclick="Action('view/#signin'); return false;" id="signin-btn">Zaloguj</a></li>
+		</ul>
+	</nav>
+	<div id="body">
+		<div style="background-color: #ffa; border: 1px solid #aa5; padding: 5px; color: #550">Trwają prace modernizacyjne. Funkcje strony mogą nie działać, a widoczne treści mogą być odbiegać od prawidłowych.</div>
+
+		<div class="view static" id="signin">
+			<form action="/signIn" method="POST" id="signin-form" onsubmit="return SignIn();">
+				<table class="form">
+					<tr><td>Login:</td><td><input id="LoginName" type="text" value="" /><td/></tr>
+					<tr><td>Hasło:</td><td><input id="Password" type="password" value="" /><td/></tr>
+					<!--<tr><td></td><td><input type="button" onclick=" return false;" value="Zaloguj" /><td/></tr> -->
+					<tr><td></td><td><input type="submit" value="Zaloguj" /><td/></tr> 
+				</table>
+			</form>
+		</div>
+		<div class="view static" id="archive">
+			<div class="article">
+				<h2>Rozgrywki funkcjonujące w przeszłości</h2>
+				<p><a href="https://ilmm09.wordpress.com/archiwum/" target="_blank">https://ilmm09.wordpress.com/archiwum/</a> - Internetowa Liga Młodych Mistrzów</p>
+				<h2>Bieżące rozgrywki</h2>
+				<p>
+					<table class="simple" cellspacing="0">
+						<tr><th>Wrzesień 2015</th><td><a href="http://challonge.com/reaktywacja_iLMM" target="_blank">Eliminacje</a></td></tr>
+						<tr><th rowspan="3">Październik 2015</th><td><a href="#" onclick="Action('view/season/1/group/a'); return false;">Grupa A</a></td></tr>
+						<tr><td><a href="#" onclick="Action('view/season/1/group/b'); return false;">Grupa B</a></td></tr>
+						<tr><td><a href="#" onclick="Action('view/season/1/group/e'); return false;">Eliminacje</a></td></tr>
+					</table>
+				</p>
+			</div>
+		</div>
+		<div class="view static" id="home">
+			<div class="article">
+				<h2>Prace modernizacyjne</h2>
+				<div class="footer"><b>Opublikowano:</b> 2 listopada 2015</div>
+				<p>Nowa wersja strony powinna być w pełni funkcjonalna wraz z końcem bieżącego tygodnia. Do tego czasu prosimy o zgłaszanie wyników spotkań na KGS do użytkownika iLigaGo. Aktualny skład grup oraz parowanie eliminacji poniżej. Pierwszą rundę eliminacyjną należy rozegrać do 5 listopada (włącznie).</p>
+				<p>Grupa A: higaki, Siasio, Deejay, Maek, gisel, papapishu, Ashitaka, Mogget</p>
+				<p>Grupa B: Alvar, Coorchac, koksik, woj, KaC, kolorek, SadPlayer, Cezary</p>
+				<p>Eliminacje - Runda 1:
+					<table>
+						<tr><td>Lilek</td><td>urtok</td><td>1:0</td></tr>
+						<tr><td>sailent</td><td>lotysz</td><td>1:0</td></tr>
+						<tr><td>gfdhff2</td><td>rarek</td><td>1:0</td></tr>
+						<tr><td>afterbreak</td><td>BYE</td><td></td></tr>
+						<tr><td>harlej9</td><td>BYE</td><td></td></tr>
+						<tr><td>kojihu</td><td>Marianna</td><td>0:0</td></tr>
+						<tr><td>r3</td><td>Marytu</td><td>1:0</td></tr>
+						<tr><td>porandojin</td><td>BYE</td><td></td></tr>
+					</table>
+				</p>
+				<p>Eliminacje - Runda 2:
+					<table>
+						<tr><td>Lilek</td><td>sailent</td></tr>
+						<tr><td>gfdhff2</td><td>afterbreak</td></tr>
+						<tr><td>harlej9</td><td>BYE</td></tr>
+						<tr><td>r3</td><td>porandojin</td></tr>
+					</table>
+				</p>
+			</div>
+			<div class="article">
+				<h2>Uruchomienie strony</h2>
+				<div class="footer"><b>Opublikowano:</b> 2 października 2015</div>
+				<p>Witamy na stronach Internetowej Ligi Go funkcjonującej pod patronatem Polskiego Stowarzyszenia Go. Za wszelkie uwagi dotyczące funkcjonowania ligi lub strony będziemy wdzięczni. Dane kontaktowe znajdują się w dziale "Pomoc" do zapoznania się z którym zachęcamy.</p>
+			</div>
+		</div>
+		<div class="view static" id="help">
+			<div class="article">
+				<h3>Spis treści</h3>
+				<ul>
+					<li><a href="#help-contact">Kontakt</a></li>
+					<li>
+						<div>Mecz</div>
+						<ul>
+							<li><a href="#help-time-settings"><b>Ustawienia czasu gry</b></a></li>
+							<li><a href="#help-game-result">Zgłaszanie wyniku</a></li>
+							<li><a href="#help-game-date">Ustalanie daty rezegrania partii</a></li>
+							<li><a href="#help-game-kifu">Kifu</a></li>
+						</ul>
+					</li>
+				</ul>
+				<hr />
+				<div id="help-contact">
+					<h3>Kontakt</h3>
+					<table>
+						<tr><td>KGS:</td><td>iLigaGo</td></tr>
+						<tr><td>E-Mail:</td><td>liga.go@o2.pl</td></tr>
+					</table>
+				</div>
+				<div id="help-time-settings">
+					<h3>Ustawienia czasu gry</h3>
+					<table>
+						<tr><td>Eliminacje:</td><td><b>20</b> minut czasu podstawowego oraz <b>3 x 20</b> sekund byo yomi</td></tr>
+						<tr><td>Grupy:</td><td><b>30</b> minut czasu podstawowego oraz <b>3 x 30</b> sekund byo yomi</td></tr>
+					</table>
+					<p>Czas może zostać wydłużony za zgodą obu graczy.</p>
+				</div>
+				<div id="help-game-result">
+					<h3>Zgłaszanie wyniku</h3>
+				</div>
+				<div id="help-game-date">
+					<h3>Ustalanie daty rezegrania partii</h3>
+					<p>Termin rozegrania partii i sposób jego ustalenia zależy od indywidualnych preferencji obu graczy. System posiada wsparcie w tym zakresie. Ustalanie terminu na stronie jest zalecane. Na liście gier przy meczach w których bierzemy udział mamy dostępną akcję "Edytuj". Po jej wybraniu otwiera się okno dialogowe na którym znajduje się pole "Propozycja daty". W pole to wprowadzamy datę wraz z godziną o której chcielibyśmy zagrać. <b>Jeśli obaj gracze wprowadzą tą samą datę zostanie ona zatwierdzona i stanie się widoczna dla wszystkich</b> na liście gier. W analogiczny sposób <b>gracze mogą powtórnie ustalić datę gry</b>.</p>
+				</div>
+				<div id="help-game-kifu">
+					<h3>Kifu</h3>
+					<p>
+						Zaleca się wprowadzanie zapisu partii podczas zgłaszania wyniku gier. Ma to na celu umożliwienie chętnym zapoznianie się z przebiegiem partii oraz ułatwia roztrzyganie wyniku w przypadku gdy te zgłoszone przez obu graczy są sprzeczne. Zapis partii można odnaleźć na stronach KGS. Przykładowo dla użytkownika "nickname" historia rozegranych partii znajduje się one pod adresem <b>http://www.gokgs.com/gameArchives.jsp?user=<i>nickname</i></b>. Należy odnaleźć zgłaszaną partię i skopiować adres do jej zapisu. Adres ten znajduje się w pierwszej kolumnie (klikamy prawym przyciskiem na tekst w pierwszej kolumnie, następnie wybieramy opcję "kopiuj adres" lub o zbliżonej nazwie i wklejamy do formularza wyniku gry). Wystarczy, że tylko jeden z graczy wprowadzi adres do zapisu gry. <b>Sugerujemy aby zapis gry wprowadzał zwyciężca meczu</b>.
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="view static" id="group">
+			<h2 id="group-title">-</h2>
+			<div id="eliminations-view">
+				<h3>Terminarz</h3>
+				<table class="time-table">
+					<tr><th>Runda</th><th>Termin</th></tr>
+					<tr><td>1</td><td>do 5</td></tr>
+					<tr><td>2</td><td>do 9</td></tr>
+					<tr><td>3</td><td>do 13</td></tr>
+					<tr><td>4</td><td>do 17</td></tr>
+					<tr><td>5</td><td>do 21</td></tr>
+					<tr><td>6</td><td>do 25</td></tr>
+					<tr><td>7</td><td>do 28</td></tr>
+					<tr><td>8</td><td>do 31</td></tr>
+				</table>
+				<h3>Wyniki</h3>
+				<span>* - otrzymna propoycja daty spotkania;</span>
+				<span>** - złożona propozycja daty spotkania;</span>
+				<span>Propozycje są widoczne tylko pomiędzy graczami.</span>
+				<div id="eliminations-tree"></div>
+			</div>
+			<div id="group-view">
+				<h3>Tabela wyników</h3>
+				<div id="results-table"></div>
+				<h3>Lista meczów</h3>
+				<span>* - otrzymna propoycja daty spotkania;</span>
+				<span>** - złożona propozycja daty spotkania;</span>
+				<span>Propozycje są widoczne tylko pomiędzy graczami.</span>
+				<div id="match-list"></div>
+			</div>
+		</div>
+		<div class="view static" id="test">
+			<a href="#" onclick="return false;">Add notification</a>
+			<a href="#" onclick="Runtime.Current.ShowView('group-a'); return false;">Long operation</a>
+		</div>
+		<div class="view static" id="profile">
+			<h2 id="group-title">Profil</h2>
+			<span></span>
+		</div>
+		<div class="view" id="iframeview">view 3</div>
+	</div>
+</body>
+</html>
+<script>
+Runtime.Initialise(new LeagueRuntime());
+</script>

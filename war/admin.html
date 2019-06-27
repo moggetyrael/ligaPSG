@@ -1,0 +1,169 @@
+<html>
+<head>
+    <script src="/scripts/Utilities.js"></script>
+	<script>
+	function AddGroup()
+	{
+		var season = document.getElementById('group_Season').value;
+		var groupName = document.getElementById('group_GroupName').value;
+		var players = document.getElementById('group_Players').value;
+		var secretCode = document.getElementById('secretCode').value;
+		var handler = 
+		{
+			onSuccess: function (request) { document.getElementById('group_Response').textContent = decodeURIComponent(request.statusText); },
+			onError: function (request) { document.getElementById('group_Response').textContent = 'B³¹d: ' + decodeURIComponent(request.statusText); },
+		};
+		Utilities.Ajax.requestAsync('POST', '/addGroup', 'SecretCode=' + secretCode + '&Season=' + season + '&GroupName=' + groupName, handler);
+	}
+	function SetGroupPlayers()
+	{
+		var season = document.getElementById('group_Season').value;
+		var groupName = document.getElementById('group_GroupName').value;
+		var players = document.getElementById('group_Players').value;
+		var secretCode = document.getElementById('secretCode').value;
+		var handler = 
+		{
+			onSuccess: function (request) { document.getElementById('group_Response').textContent = decodeURIComponent(request.statusText); },
+			onError: function (request) { document.getElementById('group_Response').textContent = 'B³¹d: ' + decodeURIComponent(request.statusText); },
+		};
+		Utilities.Ajax.requestAsync('POST', '/setGroupPlayers', 'SecretCode=' + secretCode + '&Season=' + season + '&GroupName=' + groupName + '&Players=' + players, handler);
+	}
+	function AddUsers()
+	{
+		var loginName = document.getElementById('user_LoginName').value;
+		var secretCode = document.getElementById('secretCode').value;
+		var handler = 
+		{
+			onSuccess: function (request) { document.getElementById('user_Response').textContent = decodeURIComponent(request.statusText); },
+			onError: function (request) { document.getElementById('user_Response').textContent = 'B³¹d: ' + decodeURIComponent(request.statusText); },
+		};
+		Utilities.Ajax.requestAsync('POST', '/addUsers', 'SecretCode=' + secretCode + '&LoginName=' + loginName, handler);
+	}
+	function SetPassword()
+	{
+		var loginName = document.getElementById('user_LoginName').value;
+		var password = document.getElementById('user_Password').value;
+		var secretCode = document.getElementById('secretCode').value;
+		var handler = 
+		{
+			onSuccess: function (request) { document.getElementById('user_Response').textContent = decodeURIComponent(request.statusText); },
+			onError: function (request) { document.getElementById('user_Response').textContent = 'B³¹d: ' + decodeURIComponent(request.statusText); },
+		};
+		Utilities.Ajax.requestAsync('POST', '/setUserPassword', 'SecretCode=' + secretCode + '&LoginName=' + loginName + '&Password=' + password, handler);
+	}
+	function SetEMail()
+	{
+		var loginName = document.getElementById('user_LoginName').value;
+		var eMail = document.getElementById('user_EMail').value;
+		var secretCode = document.getElementById('secretCode').value;
+		var handler = 
+		{
+			onSuccess: function (request) { document.getElementById('user_Response').textContent = decodeURIComponent(request.statusText); },
+			onError: function (request) { document.getElementById('user_Response').textContent = 'B³¹d: ' + decodeURIComponent(request.statusText); },
+		};
+		Utilities.Ajax.requestAsync('POST', '/setUserEMail', 'SecretCode=' + secretCode + '&LoginName=' + loginName + '&EMail=' + eMail, handler);
+	}
+	function SetCurrentSeason()
+	{
+		document.getElementById('settings_Response').textContent = 'Setting current season';
+		var currentSeason = document.getElementById('settings_CurrentSeason').value;
+		var handler = 
+		{
+			onSuccess: function (request) { document.getElementById('settings_Response').textContent = decodeURIComponent(request.statusText); },
+			onError: function (request) { document.getElementById('settings_Response').textContent = 'B³¹d: ' + decodeURIComponent(request.statusText); },
+		};
+		Utilities.Ajax.requestAsync('POST', '/setCurrentSeason', 'SecretCode=' + secretCode + '&CurrentSeason=' + currentSeason, handler);
+	}
+	function SetGroupModel()
+	{
+		document.getElementById('group_Response').textContent = 'Setting group model';
+		var season = document.getElementById('group_Season').value;
+		var groupName = document.getElementById('group_GroupName').value;
+		var groupModel = document.getElementById('group_Model').value;
+		var handler = 
+		{
+			onSuccess: function (request) { document.getElementById('group_Response').textContent = decodeURIComponent(request.statusText); },
+			onError: function (request) { document.getElementById('group_Response').textContent = 'B³¹d: ' + decodeURIComponent(request.statusText); },
+		};
+		Utilities.Ajax.requestAsync('POST', '/setGroupModel', 'SecretCode=' + secretCode + '&Group=' + season + '-' + groupName + '&Model=' + groupModel, handler);
+	}
+	function SendNotification()
+	{
+		var recipients = document.getElementById('notification_Recipients').value;
+		var title = document.getElementById('notification_Title').value;
+		var body = document.getElementById('notification_Body').value;
+		var handler = 
+		{
+			onSuccess: function (request) { document.getElementById('notification_Response').textContent = decodeURIComponent(request.statusText); },
+			onError: function (request) { document.getElementById('notification_Response').textContent = 'B³¹d: ' + decodeURIComponent(request.statusText); },
+		};
+		Utilities.Ajax.requestAsync('POST', '/sendNotification', 'SecretCode=' + secretCode + '&Recipients=' + recipients + '&Title=' + encodeURIComponent(title) + '&Recipients=' + recipients + '&Body=' + encodeURIComponent(body), handler);
+	}
+	function OnNotificationTemplateChanged(sender)
+	{
+		var template = JSON.parse(sender.value.replace('\\\\', '\\').replace('\\\\', '\\')); 
+		document.getElementById('notification_Title').value = template.Title;
+		document.getElementById('notification_Body').value = template.Body;
+	}
+	</script>
+</head>
+<body>
+	<div id="screenLock" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-align: center; background-color: rgba(0, 0, 50, 0.6); color: white"><h1>Trwa komunikacja z serwerem ...</h1></div>
+	<div>Secret Code: <input id="secretCode" type="password" value="" /></div>
+	
+	<h2>Settings</h2>
+	<table>
+		<tr><td>CurrentSeason:</td><td><input id="settings_CurrentSeason" type="text" value="1" /></td></tr>
+	</table>
+	<input type="button" value="Set Current Season" onclick="SetCurrentSeason()" /><br/>
+	<h4>Response:</h4>
+	<div id="settings_Response"></div>
+	
+	<h2>User</h2>
+	<table>
+		<tr><td>LoginNames:</td><td><input id="user_LoginName" type="text" value="1" /></td></tr>
+		<tr><td>Password:</td><td><input id="user_Password" type="text" value="A" /></td></tr>
+		<tr><td>EMail:</td><td><input id="user_EMail" type="text" value="" /></td></tr>
+	</table>
+	<input type="button" value="Add Users" onclick="AddUsers()" /><br/>
+	<input type="button" value="Set Password" onclick="SetPassword()" /><br/>
+	<input type="button" value="Set EMail" onclick="SetEMail()" /><br/>
+	<h4>Response:</h4>
+	<div id="user_Response"></div>
+	
+	<h2>Group</h2>
+	<table>
+		<tr><td>Season:</td><td><input id="group_Season" type="text" value="1" /></td></tr>
+		<tr><td>Group:</td><td><input id="group_GroupName" type="text" value="A" /></td></tr>
+		<tr><td>Players:</td><td><input id="group_Players" type="text" value='Siasio,higaki94,maek,gisel,Deejay,koksik,KaC,Myszcz' style="width: 400px" /></td></tr>
+		<tr><td>Model:</td><td><input id="group_Model" type="text" value='[{"id":"1-w-a","ref1":{"value":"0"},"ref2":{"value":"11"}},{"id":"1-w-b","ref1":{"value":"7"},"ref2":{"value":"12"}},{"id":"1-w-c","ref1":{"value":"4"},"ref2":{"value":"8"}},{"id":"1-w-d","ref1":{"value":"3"},"ref2":{"value":""}},{"id":"1-w-e","ref1":{"value":"2"},"ref2":{"value":""}},{"id":"1-w-f","ref1":{"value":"5"},"ref2":{"value":"9"}},{"id":"1-w-g","ref1":{"value":"6"},"ref2":{"value":"10"}},{"id":"1-w-h","ref1":{"value":"1"},"ref2":{"value":""}},{"id":"2-w-a","ref1":{"value":"1-w-a"},"ref2":{"value":"1-w-b"}},{"id":"2-w-b","ref1":{"value":"1-w-c"},"ref2":{"value":"1-w-d"}},{"id":"2-w-c","ref1":{"value":"1-w-e"},"ref2":{"value":"1-w-f"}},{"id":"2-w-d","ref1":{"value":"1-w-g"},"ref2":{"value":"1-w-h"}},{"id":"3-w-a","ref1":{"value":"2-w-a"},"ref2":{"value":"2-w-b"}},{"id":"3-w-b","ref1":{"value":"2-w-c"},"ref2":{"value":"2-w-d"}},{"id":"3-l-a","ref1":{"value":"2-w-a"},"ref2":{"value":"2-w-b"}},{"id":"3-l-b","ref1":{"value":"2-w-c"},"ref2":{"value":"2-w-d"}},{"id":"4-w-a","ref1":{"value":"3-w-a"},"ref2":{"value":"3-w-b"}},{"id":"4-l-a","ref1":{"value":"3-l-a"},"ref2":{"value":"3-w-a"}},{"id":"4-l-b","ref1":{"value":"3-l-b"},"ref2":{"value":"3-w-b"}},{"id":"5-l-a","ref1":{"value":"4-l-a"},"ref2":{"value":"4-l-b"}},{"id":"6-l-a","ref1":{"value":"4-w-a"},"ref2":{"value":"5-l-a"}}]' /></td></tr>
+	</table>
+	<input type="button" value="Add Group" onclick="AddGroup()" /><br/>
+	<input type="button" value="Set Players" onclick="SetGroupPlayers()" /><br/>
+	<input type="button" value="Set Model" onclick="SetGroupModel()" /><br/>
+	<h4>Response:</h4>
+	<div id="group_Response"></div>
+	<script type="text/javascript">
+		document.getElementById('screenLock').style.display = 'none'; 
+	</script>
+	
+	<h2>Notification</h2>
+	<table>
+		<tr>
+			<td>Template:</td>
+			<td>
+				<select id="notification_Template" onchange="OnNotificationTemplateChanged(this)">
+					<option></option>
+					<option value='{"Title": "Internetowa Liga PSG", "Body": "Witaj,<br /><br />w Internetowej Lidze Polskiego Stowarzyszenia Go. Zapraszamy do zapoznania siê z regulaminem na stronie ligi znajduj¹cej siê pod adresem <a href=\\"http://liga-go.appspot.com/\\">http://liga-go.appspot.com</a>. Twoje dane do logowania:<br /><br />Nazwa u¿ytkownika: [username]<br />Has³o: [password]<br /><br /><p>¯yczymy powodzenia!</p>"}'>Witamy + has³o</option>
+				</select>
+			</td>
+		</tr>
+		<tr><td>Recipients:</td><td><input id="notification_Recipients" type="text" /></td></tr>
+		<tr><td>Title:</td><td><input id="notification_Title" type="text" /></td></tr>
+		<tr><td>Body:</td><td><textarea id="notification_Body" rows="10" cols="80"></textarea></td></tr>
+	</table>
+	<input type="button" value="Send" onclick="SendNotification()" /><br/>
+	<h4>Response:</h4>
+	<div id="notification_Response"></div>
+</body>
+</html>

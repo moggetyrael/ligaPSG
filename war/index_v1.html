@@ -1,0 +1,72 @@
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<link rel="stylesheet" type="text/css" href="styles/main.css">
+	<script src="scripts/main.js"></script>
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>-->
+</head>
+<body>
+	<div id="notifications">
+	</div>
+	<div id="screenLock"><h1>Trwa komunikacja z serwerem ...</h1></div>
+	<nav id="nav">
+		<ul>
+			<li><a href="#" onclick="League.UI.Actions.ShowView('home')"><img src="http://psg.go.art.pl/sites/default/files/psg-logo_jt-mini1_0.png" /></a></li>
+			<li><a href="#" onclick="League.UI.Actions.ShowView('group-A')">Grupa A</a></li>
+			<li><a href="#" onclick="League.UI.Actions.ShowView('group-B')">Grupa B</a></li>
+			<li><a href="#" onclick="League.UI.Actions.ShowView('eliminations')">Eliminacje</a></li>
+			<li><a href="#" onclick="League.UI.Actions.ShowView('archive')">Archiwum</a></li>
+			<li style="float: right"><a id="profileLink" href="#" onclick="League.UI.ShowProfileView()">Profil</a></li>
+			<li style="float: right" class="signOut"><a href="#" onclick="League.UI.Handlers.OnClickSignOut()">Wyloguj</a></li>
+			<li style="float: right" class="signIn"><a href="#" onclick="League.UI.Actions.ShowView('signIn')">Zaloguj</a></li>
+		</ul>
+	</nav>
+	<div id="body">
+		<div id="views">
+			<div id="home">
+				<iframe src="http://filipdom.w.staszic.waw.pl/go/aktualnosci.html" width="100%" height="100%"></iframe>
+			</div>
+			<div id="eliminations">
+				<iframe src="http://challonge.com/reaktywacja_iLMM/module" width="100%" height="100%" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>
+			</div>
+			<div id="signIn" class="view">
+				<table>
+					<tr><td>Username:</td><td><input id="username" type="text" value="gisel" /><td/></tr>
+					<tr><td>Password:</td><td><input id="password" type="password" value="abc" /><td/></tr>
+					<tr><td></td><td><input type="button" onclick="League.UI.Handlers.OnClickSignIn()" value="Sign In" /><td/></tr>
+				</table>
+			</div>
+			<div id="profile" class="view">
+				Your profile page.
+			</div>
+			<div id="resultsIndex" class="view">
+				<div>
+					<div>Season 1</div>
+					<div><a href="#results" onclick="League.UI.ShowView('results')">Group A</a></div>
+					<div><a href="#" onclick="League.UI.ShowView('results')">Group B</a></div>
+				</div>
+			</div>
+			<div id="results">
+				<div class="view">
+					<h2>Tabela wyników</h2>
+					<div id="resultsTable">
+					</div>
+					<h2>Lista partii</h2>
+					<div>
+						<input type="button" value="Wszystkie" onclick="League.UI.Controls.MatchList.ShowAll()" />
+						<input type="button" value="Moje" onclick="League.UI.Controls.MatchList.ShowMy()" />
+					</div>
+					<br/>
+					<div id="matchesTable">
+					</div>
+				</div>
+			</div>
+			<div id="archive" class="view">a
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+League.UI.Initialize();
+</script>
